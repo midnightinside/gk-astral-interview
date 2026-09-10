@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 
+import { useAppSelector } from '~/app/hooks';
 import { ROUTES } from '~/app/routes';
+import { selectIsAuthenticated } from '~/modules/auth/authSlice';
 import { spacing, theme } from '~/shared/theme';
 import { ButtonLink } from '~/shared/ui/Button';
 import { Typography } from '~/shared/ui/Typography';
@@ -61,6 +63,8 @@ const FEATURES = [
 ];
 
 export const HomeScreen = () => {
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
   return (
     <Root>
       <Hero>
@@ -77,9 +81,11 @@ export const HomeScreen = () => {
         </Typography>
         <Actions>
           <ButtonLink to={ROUTES.cards}>Открыть карточки</ButtonLink>
-          <ButtonLink to={ROUTES.login} variant="secondary">
-            Войти в профиль
-          </ButtonLink>
+          {isAuthenticated ? null : (
+            <ButtonLink to={ROUTES.login} variant="secondary">
+              Войти в профиль
+            </ButtonLink>
+          )}
         </Actions>
       </Hero>
 

@@ -88,7 +88,7 @@ export const LoginForm = ({
               name={field.name}
               value={field.value}
               autoComplete="username"
-              placeholder="admin"
+              placeholder="Логин"
               isInvalid={Boolean(fieldState.error)}
               describedBy={getDescribedBy({
                 controlId: 'login',
@@ -117,7 +117,7 @@ export const LoginForm = ({
               type="password"
               value={field.value}
               autoComplete="current-password"
-              placeholder="admin"
+              placeholder="Пароль"
               isInvalid={Boolean(fieldState.error)}
               describedBy={getDescribedBy({
                 controlId: 'password',

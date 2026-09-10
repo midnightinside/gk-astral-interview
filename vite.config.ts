@@ -13,7 +13,13 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
-    setupFiles: ['./vitest.setup.ts'],
+    /**
+     * Абсолютный путь вместо относительного: на Windows Vitest резолвит
+     * относительный setup-файл от текущей директории, и при отличии регистра
+     * буквы диска он попадает в отдельный граф модулей со своей копией
+     * `vitest` — хуки перестают видеть текущий сьют.
+     */
+    setupFiles: [fileURLToPath(new URL('./vitest.setup.ts', import.meta.url))],
     include: ['src/**/*.test.{ts,tsx}'],
     restoreMocks: true,
   },

@@ -8,6 +8,10 @@ import { httpClient } from './httpClient';
 export type WordDto = {
   id: string;
   word: string;
+  /** Слово, разбитое на слоги: `be·nev·o·lent`. */
+  syllables: string;
+  partOfSpeech: string;
+  definition: string;
   translation: string;
   example: string;
 };

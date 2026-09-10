@@ -22,15 +22,29 @@ const Grid = styled.div({
 export const CardList = ({ cards }: CardListProps) => {
   return (
     <Grid>
-      {cards.map(({ id, title, word, example, translation }) => (
-        <Card
-          key={id}
-          title={title}
-          word={word}
-          example={example}
-          translation={translation}
-        />
-      ))}
+      {cards.map(
+        ({
+          id,
+          title,
+          word,
+          syllables,
+          partOfSpeech,
+          definition,
+          example,
+          translation,
+        }) => (
+          <Card
+            key={id}
+            title={title}
+            word={word}
+            syllables={syllables}
+            partOfSpeech={partOfSpeech}
+            definition={definition}
+            example={example}
+            translation={translation}
+          />
+        ),
+      )}
     </Grid>
   );
 };

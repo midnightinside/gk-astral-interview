@@ -6,6 +6,9 @@ import { getWordsSource } from '~/data/sources/wordsSources';
 export type Word = {
   id: string;
   word: string;
+  syllables: string;
+  partOfSpeech: string;
+  definition: string;
   translation: string;
   example: string;
 };
@@ -18,11 +21,24 @@ export const wordsRepository = {
   getWords: async (): Promise<Word[]> => {
     const words = await getWordsSource();
 
-    return words.map(({ id, word, translation, example }) => ({
-      id: String(id),
-      word,
-      translation,
-      example,
-    }));
+    return words.map(
+      ({
+        id,
+        word,
+        syllables,
+        partOfSpeech,
+        definition,
+        translation,
+        example,
+      }) => ({
+        id: String(id),
+        word,
+        syllables,
+        partOfSpeech,
+        definition,
+        translation,
+        example,
+      }),
+    );
   },
 };

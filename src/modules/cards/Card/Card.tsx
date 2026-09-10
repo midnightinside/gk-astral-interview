@@ -8,20 +8,23 @@ import { Typography } from '~/shared/ui/Typography';
 type CardProps = {
   title: string;
   word: string;
+  syllables: string;
+  partOfSpeech: string;
+  definition: string;
   example: string;
   translation: string;
 };
 
-const CARD_HEIGHT = '270px';
-
 const Scene = styled.div({
-  height: CARD_HEIGHT,
   perspective: '1400px',
 });
 
 const Inner = styled.div<{ $isFlipped: boolean }>(({ $isFlipped }) => ({
-  position: 'relative',
-  width: '100%',
+  /**
+   * Обе стороны лежат в одной ячейке сетки, поэтому высота карточки равна
+   * высоте более длинной стороны — фиксированная высота не нужна.
+   */
+  display: 'grid',
   height: '100%',
   transformStyle: 'preserve-3d',
   transition: `transform ${theme.transition.slow}`,
@@ -29,16 +32,13 @@ const Inner = styled.div<{ $isFlipped: boolean }>(({ $isFlipped }) => ({
 }));
 
 const Face = styled.div({
-  position: 'absolute',
-  inset: 0,
+  gridArea: '1 / 1',
   display: 'flex',
   flexDirection: 'column',
-  gap: spacing(3),
   padding: spacing(5),
   borderRadius: theme.radius.lg,
   boxShadow: theme.shadow.md,
   backfaceVisibility: 'hidden',
-  overflow: 'hidden',
 });
 
 const FrontFace = styled(Face)({
@@ -48,22 +48,33 @@ const FrontFace = styled(Face)({
 
 const BackFace = styled(Face)({
   transform: 'rotateY(180deg)',
-  background: `linear-gradient(150deg, ${theme.color.primary}, ${theme.color.accent})`,
+  background: theme.color.primaryMuted,
   border: `1px solid ${theme.color.primary}`,
 });
 
 const Content = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  gap: spacing(2),
   flexGrow: 1,
+  gap: spacing(2),
 });
 
-const Divider = styled.div({
-  width: '48px',
-  height: '3px',
-  borderRadius: theme.radius.pill,
-  background: theme.color.primary,
+/**
+ * Слово набирается обычным начертанием крупным кеглем — как в примере из
+ * задания, где слово разбито на слоги: `be·nev·o·lent`.
+ */
+const WordText = styled(Typography)({
+  fontSize: '30px',
+  fontWeight: 400,
+  lineHeight: 1.2,
+});
+
+/** Кнопка действия выключена из общей сетки отступов и выровнена по тексту. */
+const ActionButton = styled(Button)({
+  alignSelf: 'flex-start',
+  padding: `${spacing(2)} 0`,
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
 });
 
 /**
@@ -72,7 +83,15 @@ const Divider = styled.div({
  * Клик по кнопке действия переворачивает карточку и показывает перевод,
  * повторный клик возвращает лицевую сторону.
  */
-export const Card = ({ title, word, example, translation }: CardProps) => {
+export const Card = ({
+  title,
+  word,
+  syllables,
+  partOfSpeech,
+  definition,
+  example,
+  translation,
+}: CardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const frontButton = useRef<HTMLButtonElement>(null);
   const backButton = useRef<HTMLButtonElement>(null);
@@ -102,46 +121,48 @@ export const Card = ({ title, word, example, translation }: CardProps) => {
     <Scene>
       <Inner $isFlipped={isFlipped}>
         <FrontFace inert={isFlipped}>
-          <Typography variant="overline" color="secondary">
-            {title}
-          </Typography>
           <Content>
-            <Typography variant="h2">{word}</Typography>
-            <Divider />
             <Typography variant="caption" color="secondary">
-              {example}
+              {title}
             </Typography>
+            <WordText>{syllables}</WordText>
+            <Typography variant="caption" color="secondary">
+              {partOfSpeech}
+            </Typography>
+            <Typography variant="body">{definition}</Typography>
+            <Typography variant="body">“{example}”</Typography>
           </Content>
-          <Button
+
+          <ActionButton
             ref={frontButton}
-            variant="secondary"
+            variant="text"
             aria-pressed={isFlipped}
             onClick={toggle}
           >
             Learn more
-          </Button>
+          </ActionButton>
         </FrontFace>
 
         <BackFace inert={!isFlipped}>
-          <Typography variant="overline" color="contrast">
-            Перевод
-          </Typography>
           <Content>
-            <Typography variant="h3" color="contrast">
-              {word}
+            <Typography variant="caption" color="secondary">
+              Перевод
             </Typography>
-            <Typography variant="subtitle" color="contrast">
-              {translation}
+            <WordText>{word}</WordText>
+            <Typography variant="caption" color="secondary">
+              {partOfSpeech}
             </Typography>
+            <Typography variant="body">{translation}</Typography>
           </Content>
-          <Button
+
+          <ActionButton
             ref={backButton}
-            variant="secondary"
+            variant="text"
             aria-pressed={isFlipped}
             onClick={toggle}
           >
             Назад к слову
-          </Button>
+          </ActionButton>
         </BackFace>
       </Inner>
     </Scene>

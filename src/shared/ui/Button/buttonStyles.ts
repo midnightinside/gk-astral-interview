@@ -2,7 +2,12 @@ import { type CSSObject } from '@emotion/react';
 
 import { spacing, theme } from '~/shared/theme';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'ghost'
+  | 'danger'
+  | 'text';
 
 const VARIANT_STYLE = {
   primary: {
@@ -10,24 +15,36 @@ const VARIANT_STYLE = {
     color: theme.color.contrast,
     borderColor: theme.color.primary,
     hoverBackground: theme.color.primaryHover,
+    hoverDecoration: 'none',
   },
   secondary: {
     background: theme.color.surface,
     color: theme.color.primary,
     borderColor: theme.color.borderStrong,
     hoverBackground: theme.color.primaryMuted,
+    hoverDecoration: 'none',
   },
   ghost: {
     background: 'transparent',
     color: theme.color.textSecondary,
     borderColor: 'transparent',
     hoverBackground: theme.color.surfaceMuted,
+    hoverDecoration: 'none',
   },
   danger: {
     background: theme.color.danger,
     color: theme.color.contrast,
     borderColor: theme.color.danger,
     hoverBackground: '#b93a3a',
+    hoverDecoration: 'none',
+  },
+  /** Кнопка-надпись без подложки: подчёркивается при наведении. */
+  text: {
+    background: 'transparent',
+    color: theme.color.text,
+    borderColor: 'transparent',
+    hoverBackground: 'transparent',
+    hoverDecoration: 'underline',
   },
 } as const;
 
@@ -61,6 +78,7 @@ export const createButtonStyle = (
 
     '&:hover:not(:disabled)': {
       background: style.hoverBackground,
+      textDecoration: style.hoverDecoration,
     },
 
     '&:focus-visible': {

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import { spacing, theme } from '~/shared/theme';
 import { Button } from '~/shared/ui/Button';
@@ -47,7 +47,7 @@ const Inner = styled.div({
   },
 });
 
-const Logo = styled.div({
+const Logo = styled(Link)({
   display: 'flex',
   alignItems: 'center',
   gap: spacing(2),
@@ -122,8 +122,8 @@ export const Header = ({ title, navigation, user, onLogout }: HeaderProps) => {
   return (
     <Root>
       <Inner>
-        <Logo>
-          <LogoMark>W</LogoMark>
+        <Logo to="/">
+          <LogoMark aria-hidden="true">W</LogoMark>
           <Typography variant="h3" as="div">
             {title}
           </Typography>

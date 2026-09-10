@@ -18,9 +18,8 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "types": ["vite/client"],
-    "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["./src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "./*.ts", "./*.mts", "./*.mjs"],

@@ -8,6 +8,8 @@ Single Page Application для изучения иностранных слов:
 
 Демо: **https://gk-astral-interview.vercel.app** (вход `admin` / `admin`).
 
+Ответы на теоретические вопросы задания — [docs/theory.md](docs/theory.md).
+
 ## Интерфейс
 
 Главная рассказывает о проекте; данные для хедера и футера прокидываются через

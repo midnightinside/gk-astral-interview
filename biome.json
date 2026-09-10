@@ -1,0 +1,16 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.12/schema.json",
+  "extends": ["@astral/biomejs-config/web"],
+  "overrides": [
+    {
+      "includes": ["src/shared/ui/Typography/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noRestrictedElements": "off"
+          }
+        }
+      }
+    }
+  ]
+}

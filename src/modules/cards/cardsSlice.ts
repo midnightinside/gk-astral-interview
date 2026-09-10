@@ -5,6 +5,10 @@ import {
   wordsRepository,
 } from '~/data/repositories/wordsRepository';
 import { pickRandom } from '~/shared/utils/pickRandom';
+import {
+  type RequestStatus,
+  shouldRequest,
+} from '~/shared/utils/requestStatus';
 
 import { FALLBACK_TITLE, MOTIVATIONAL_TITLES } from './constants';
 
@@ -15,11 +19,9 @@ export type WordCard = Word & {
   title: string;
 };
 
-type CardsStatus = 'idle' | 'pending' | 'error';
-
 type CardsState = {
   items: WordCard[];
-  status: CardsStatus;
+  status: RequestStatus;
   error: string | null;
 };
 
@@ -36,19 +38,30 @@ const toWordCard = (word: Word): WordCard => ({
   title: pickRandom(MOTIVATIONAL_TITLES, FALLBACK_TITLE),
 });
 
+/**
+ * Слова обезличены и меняются только при правке мок-сервиса, поэтому
+ * загружаются один раз за жизнь страницы: `condition` отменяет повторный
+ * запрос, если данные уже получены или запрос ещё выполняется.
+ */
 export const fetchCards = createAsyncThunk<
   WordCard[],
   void,
-  { rejectValue: string }
->('cards/fetch', async (_, { rejectWithValue }) => {
-  try {
-    const words = await wordsRepository.getWords();
+  { state: { cards: CardsState }; rejectValue: string }
+>(
+  'cards/fetch',
+  async (_, { rejectWithValue }) => {
+    try {
+      const words = await wordsRepository.getWords();
 
-    return words.map(toWordCard);
-  } catch {
-    return rejectWithValue(LOAD_ERROR);
-  }
-});
+      return words.map(toWordCard);
+    } catch {
+      return rejectWithValue(LOAD_ERROR);
+    }
+  },
+  {
+    condition: (_, { getState }) => shouldRequest(getState().cards.status),
+  },
+);
 
 export const cardsSlice = createSlice({
   name: 'cards',
@@ -61,7 +74,7 @@ export const cardsSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchCards.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.status = 'success';
         state.items = action.payload;
       })
       .addCase(fetchCards.rejected, (state, action) => {

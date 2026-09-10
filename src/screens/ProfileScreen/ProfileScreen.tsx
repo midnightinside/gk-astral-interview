@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '~/app/hooks';
 import { EditView } from '~/modules/profile/EditView';
+import { PROFILE_FIELDS } from '~/modules/profile/fieldsSchema';
 import { toFormValues } from '~/modules/profile/profileMapper';
 import {
   fetchProfile,
@@ -65,6 +66,7 @@ export const ProfileScreen = () => {
       {profile ? (
         <EditView
           key={profile.id}
+          fields={PROFILE_FIELDS}
           defaultValues={toFormValues(profile)}
           isSaving={isSaving}
           isSaved={isSaved}

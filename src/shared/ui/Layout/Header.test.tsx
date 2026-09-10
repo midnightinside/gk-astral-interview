@@ -36,6 +36,23 @@ describe('Header', () => {
     );
   });
 
+  it('ведёт с логотипа на главную', () => {
+    renderWithRouter(
+      <Header
+        title="Word Cards"
+        navigation={NAVIGATION}
+        user={null}
+        onLogout={() => {}}
+      />,
+      '/cards',
+    );
+
+    expect(screen.getByRole('link', { name: 'Word Cards' })).toHaveAttribute(
+      'href',
+      '/',
+    );
+  });
+
   it('подсвечивает активный маршрут', () => {
     renderWithRouter(
       <Header

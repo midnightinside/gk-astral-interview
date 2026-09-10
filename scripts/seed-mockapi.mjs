@@ -1,83 +1,72 @@
-import { type UserDto } from './usersSources';
-import { type WordDto } from './wordsSources';
-
 /**
- * Локальные данные, используемые пока не задан VITE_API_BASE_URL и как откат,
- * если внешний мок-сервис недоступен.
+ * Наполнение мок-сервиса данными приложения.
  *
- * Слова вынесены в массив — как требует задание.
+ * Использование:
+ *   node scripts/seed-mockapi.mjs https://<projectId>.mockapi.io/api/v1
+ *
+ * Скрипт идемпотентен: перед записью удаляет существующие записи ресурсов
+ * `words` и `users`.
  */
-export const WORDS_FIXTURE: WordDto[] = [
+
+const WORDS = [
   {
-    id: '1',
     word: 'benevolent',
     translation: 'доброжелательный, благожелательный',
     example: 'A benevolent stranger paid for our coffee and left quietly.',
   },
   {
-    id: '2',
     word: 'resilient',
     translation: 'стойкий, быстро восстанавливающийся',
     example: 'Her resilient nature helped the team survive a rough quarter.',
   },
   {
-    id: '3',
     word: 'eloquent',
     translation: 'красноречивый',
     example: 'The eloquent speaker turned dry numbers into a real story.',
   },
   {
-    id: '4',
     word: 'meticulous',
     translation: 'скрупулёзный, тщательный',
     example: 'He keeps meticulous notes of every code review he receives.',
   },
   {
-    id: '5',
     word: 'serendipity',
     translation: 'счастливая случайность',
     example: 'Finding that library was pure serendipity, not planning.',
   },
   {
-    id: '6',
     word: 'candid',
     translation: 'откровенный, искренний',
     example: 'A candid retrospective is worth more than a polite one.',
   },
   {
-    id: '7',
     word: 'tenacious',
     translation: 'упорный, цепкий',
     example: 'Debugging rewards the tenacious more than the talented.',
   },
   {
-    id: '8',
     word: 'gregarious',
     translation: 'общительный',
     example: 'Our gregarious teammate knows everyone in the office.',
   },
   {
-    id: '9',
     word: 'lucid',
     translation: 'ясный, понятный',
     example: 'The lucid documentation saved us a week of guessing.',
   },
   {
-    id: '10',
     word: 'pragmatic',
     translation: 'практичный, прагматичный',
     example: 'A pragmatic fix today beats a perfect refactor never.',
   },
 ];
 
-export const USER_FIXTURE: UserDto = {
-  id: '1',
+const USER = {
   login: 'admin',
   password: 'admin',
   name: 'Артём Васильев',
   email: 'admin@word-cards.dev',
   profile: {
-    id: '1',
     lastName: 'Васильев',
     firstName: 'Артём',
     middleName: 'Сергеевич',
@@ -101,3 +90,77 @@ export const USER_FIXTURE: UserDto = {
       'Фронтенд-разработчик. Люблю понятные интерфейсы и предсказуемую архитектуру.',
   },
 };
+
+const baseUrl = (process.argv[2] ?? '').replace(/\/$/, '');
+
+if (!baseUrl) {
+  console.error(
+    'Укажите базовый URL: node scripts/seed-mockapi.mjs https://<projectId>.mockapi.io/api/v1',
+  );
+  process.exit(1);
+}
+
+const request = async (method, path, body) => {
+  const response = await fetch(`${baseUrl}${path}`, {
+    method,
+    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  if (!response.ok) {
+    throw new Error(`${method} ${path} → HTTP ${response.status}`);
+  }
+
+  return response.status === 204 ? null : response.json();
+};
+
+const list = async (resource) => {
+  const response = await fetch(`${baseUrl}/${resource}`);
+
+  if (!response.ok) {
+    return [];
+  }
+
+  const data = await response.json();
+
+  return Array.isArray(data) ? data : [];
+};
+
+const clear = async (resource) => {
+  const items = await list(resource);
+
+  for (const item of items) {
+    await request('DELETE', `/${resource}/${item.id}`);
+  }
+
+  return items.length;
+};
+
+const seed = async () => {
+  console.log(`Мок-сервис: ${baseUrl}`);
+
+  const removedWords = await clear('words');
+  const removedUsers = await clear('users');
+
+  console.log(`Удалено записей: words ${removedWords}, users ${removedUsers}`);
+
+  for (const word of WORDS) {
+    await request('POST', '/words', word);
+  }
+
+  await request('POST', '/users', USER);
+
+  const words = await list('words');
+  const users = await list('users');
+  const [user] = users;
+
+  console.log(`Записано: words ${words.length}, users ${users.length}`);
+  console.log(`Первое слово: ${words[0]?.word} — ${words[0]?.translation}`);
+  console.log(`Пользователь: ${user?.login} / ${user?.name} (id ${user?.id})`);
+  console.log(`Полей в профиле: ${Object.keys(user?.profile ?? {}).length}`);
+};
+
+seed().catch((error) => {
+  console.error(`Не удалось наполнить мок-сервис: ${error.message}`);
+  process.exit(1);
+});

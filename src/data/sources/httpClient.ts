@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import axiosRetry from 'axios-retry';
 
 import { API_BASE_URL } from '~/shared/constants/env';
@@ -22,3 +22,16 @@ axiosRetry(httpClient, {
   retryDelay: axiosRetry.exponentialDelay,
   retryCondition: axiosRetry.isNetworkOrIdempotentRequestError,
 });
+
+/**
+ * Отсутствие записи — не сбой сети.
+ *
+ * mockapi.io отвечает 404 на пустую выборку по фильтру, поэтому такой ответ
+ * нужно отличать от недоступности сервиса.
+ */
+export const isNotFoundError = (error: unknown) => {
+  return (
+    axios.isAxiosError(error) &&
+    error.response?.status === HttpStatusCode.NotFound
+  );
+};

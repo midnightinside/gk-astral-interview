@@ -2,7 +2,7 @@ import {
   getProfileSource,
   type ProfileDto,
   updateProfileSource,
-} from '~/data/sources/profileSources';
+} from '~/data/sources/usersSources';
 
 /**
  * Профиль в терминах приложения.

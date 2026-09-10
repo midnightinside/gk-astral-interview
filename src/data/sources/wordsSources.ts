@@ -1,6 +1,4 @@
-import { IS_REMOTE_API_ENABLED } from '~/shared/constants/env';
-import { delay } from '~/shared/utils/delay';
-
+import { withFixtureFallback } from './fixtureFallback';
 import { WORDS_FIXTURE } from './fixtures';
 import { httpClient } from './httpClient';
 
@@ -14,16 +12,13 @@ export type WordDto = {
   example: string;
 };
 
-const FIXTURE_DELAY = 400;
+export const getWordsSource = () => {
+  return withFixtureFallback<WordDto[]>(
+    async () => {
+      const { data } = await httpClient.get<WordDto[]>('/words');
 
-export const getWordsSource = async () => {
-  if (!IS_REMOTE_API_ENABLED) {
-    await delay(FIXTURE_DELAY);
-
-    return WORDS_FIXTURE;
-  }
-
-  const { data } = await httpClient.get<WordDto[]>('/words');
-
-  return data;
+      return data;
+    },
+    () => WORDS_FIXTURE,
+  );
 };

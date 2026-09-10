@@ -1,10 +1,10 @@
-import { findUserByLoginSource } from '~/data/sources/authSources';
 import {
   clearSessionSource,
   readSessionSource,
   type SessionDto,
   writeSessionSource,
 } from '~/data/sources/sessionLocalSources';
+import { findUserByLoginSource } from '~/data/sources/usersSources';
 
 export type Credentials = {
   login: string;

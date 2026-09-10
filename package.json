@@ -8,6 +8,7 @@
     "preview": "vite preview",
     "lint": "biome check --write --diagnostic-level=error",
     "lint:all": "biome check --write",
+    "lint:ci": "biome ci .",
     "lint:types": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

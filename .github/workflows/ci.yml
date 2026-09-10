@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+# Новые коммиты отменяют прогон по предыдущим: в очереди остаётся только
+# актуальное состояние ветки.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Линтер и типы
+    runs-on: ubuntu-latest
+    steps:
+      - name: Клонирование репозитория
+        uses: actions/checkout@v5
+
+      - name: Установка Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Установка зависимостей
+        run: npm ci
+
+      - name: Biome
+        run: npm run lint:ci
+
+      - name: Проверка типов
+        run: npm run lint:types
+
+  test:
+    name: Тесты
+    runs-on: ubuntu-latest
+    steps:
+      - name: Клонирование репозитория
+        uses: actions/checkout@v5
+
+      - name: Установка Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Установка зависимостей
+        run: npm ci
+
+      - name: Vitest
+        run: npm test
+
+  build:
+    name: Сборка
+    runs-on: ubuntu-latest
+    steps:
+      - name: Клонирование репозитория
+        uses: actions/checkout@v5
+
+      - name: Установка Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Установка зависимостей
+        run: npm ci
+
+      - name: Vite build
+        run: npm run build

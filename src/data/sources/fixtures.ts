@@ -1,0 +1,133 @@
+import { type UserDto } from './usersSources';
+import { type WordDto } from './wordsSources';
+
+/**
+ * Локальные данные, используемые пока не задан VITE_API_BASE_URL и как откат,
+ * если внешний мок-сервис недоступен.
+ *
+ * Слова вынесены в массив — как требует задание.
+ */
+export const WORDS_FIXTURE: WordDto[] = [
+  {
+    id: '1',
+    word: 'benevolent',
+    syllables: 'be·nev·o·lent',
+    partOfSpeech: 'adjective',
+    definition: 'well meaning and kindly.',
+    translation: 'доброжелательный, благожелательный',
+    example: 'a benevolent smile',
+  },
+  {
+    id: '2',
+    word: 'resilient',
+    syllables: 're·sil·ient',
+    partOfSpeech: 'adjective',
+    definition: 'able to recover quickly from difficulties.',
+    translation: 'стойкий, быстро восстанавливающийся',
+    example: 'a resilient team',
+  },
+  {
+    id: '3',
+    word: 'eloquent',
+    syllables: 'el·o·quent',
+    partOfSpeech: 'adjective',
+    definition: 'fluent and persuasive in speech or writing.',
+    translation: 'красноречивый',
+    example: 'an eloquent speaker',
+  },
+  {
+    id: '4',
+    word: 'meticulous',
+    syllables: 'me·tic·u·lous',
+    partOfSpeech: 'adjective',
+    definition: 'showing great attention to detail.',
+    translation: 'скрупулёзный, тщательный',
+    example: 'meticulous notes',
+  },
+  {
+    id: '5',
+    word: 'serendipity',
+    syllables: 'ser·en·dip·i·ty',
+    partOfSpeech: 'noun',
+    definition: 'the occurrence of happy events by chance.',
+    translation: 'счастливая случайность',
+    example: 'a moment of serendipity',
+  },
+  {
+    id: '6',
+    word: 'candid',
+    syllables: 'can·did',
+    partOfSpeech: 'adjective',
+    definition: 'truthful and straightforward.',
+    translation: 'откровенный, искренний',
+    example: 'a candid answer',
+  },
+  {
+    id: '7',
+    word: 'tenacious',
+    syllables: 'te·na·cious',
+    partOfSpeech: 'adjective',
+    definition: 'keeping a firm hold of something; persistent.',
+    translation: 'упорный, цепкий',
+    example: 'a tenacious researcher',
+  },
+  {
+    id: '8',
+    word: 'gregarious',
+    syllables: 'gre·gar·i·ous',
+    partOfSpeech: 'adjective',
+    definition: 'fond of company; sociable.',
+    translation: 'общительный',
+    example: 'a gregarious host',
+  },
+  {
+    id: '9',
+    word: 'lucid',
+    syllables: 'lu·cid',
+    partOfSpeech: 'adjective',
+    definition: 'expressed clearly; easy to understand.',
+    translation: 'ясный, понятный',
+    example: 'a lucid explanation',
+  },
+  {
+    id: '10',
+    word: 'pragmatic',
+    syllables: 'prag·mat·ic',
+    partOfSpeech: 'adjective',
+    definition: 'dealing with things realistically.',
+    translation: 'практичный, прагматичный',
+    example: 'a pragmatic decision',
+  },
+];
+
+export const USER_FIXTURE: UserDto = {
+  id: '1',
+  login: 'admin',
+  password: 'admin',
+  name: 'Артём Васильев',
+  email: 'admin@word-cards.dev',
+  profile: {
+    id: '1',
+    lastName: 'Васильев',
+    firstName: 'Артём',
+    middleName: 'Сергеевич',
+    birthDate: '1996-04-18',
+    age: 30,
+    email: 'admin@word-cards.dev',
+    phone: '+7 900 000-00-00',
+    country: 'russia',
+    city: 'Калуга',
+    timezone: 'msk',
+    position: 'frontend',
+    experienceYears: 5,
+    employmentType: 'full',
+    salary: 250000,
+    workSchedule: '5/2, гибкое начало дня',
+    skills: ['typescript', 'react', 'redux'],
+    languages: ['ru', 'en'],
+    preferredContact: 'email',
+    telegram: '',
+    about:
+      'Фронтенд-разработчик. Люблю понятные интерфейсы и предсказуемую архитектуру.',
+  },
+};

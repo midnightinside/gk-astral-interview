@@ -11,6 +11,7 @@ import {
 } from '~/modules/cards/cardsSlice';
 import { spacing } from '~/shared/theme';
 import { Alert } from '~/shared/ui/Alert';
+import { Loader } from '~/shared/ui/Loader';
 import { Typography } from '~/shared/ui/Typography';
 
 const Root = styled.div({
@@ -23,11 +24,6 @@ const Heading = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: spacing(1),
-});
-
-/** Обёртка нужна, чтобы сообщение о загрузке попало в живую область. */
-const Status = styled.div({
-  display: 'flex',
 });
 
 export const CardsScreen = () => {
@@ -52,11 +48,7 @@ export const CardsScreen = () => {
       {errorMessage ? <Alert severity="error">{errorMessage}</Alert> : null}
 
       {isPending ? (
-        <Status role="status">
-          <Typography variant="body" color="secondary">
-            Загружаем карточки…
-          </Typography>
-        </Status>
+        <Loader label="Загружаем карточки…" />
       ) : (
         <CardList cards={cards} />
       )}

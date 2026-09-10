@@ -15,6 +15,7 @@ import {
 } from '~/modules/profile/profileSlice';
 import { type ProfileFormValues } from '~/modules/profile/types';
 import { spacing } from '~/shared/theme';
+import { Loader } from '~/shared/ui/Loader';
 import { Typography } from '~/shared/ui/Typography';
 
 const Root = styled.div({
@@ -27,11 +28,6 @@ const Heading = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: spacing(1),
-});
-
-/** Обёртка нужна, чтобы сообщение о загрузке попало в живую область. */
-const Status = styled.div({
-  display: 'flex',
 });
 
 export const ProfileScreen = () => {
@@ -64,13 +60,7 @@ export const ProfileScreen = () => {
         </Typography>
       </Heading>
 
-      {isPending && !profile ? (
-        <Status role="status">
-          <Typography variant="body" color="secondary">
-            Загружаем профиль…
-          </Typography>
-        </Status>
-      ) : null}
+      {isPending && !profile ? <Loader label="Загружаем профиль…" /> : null}
 
       {profile ? (
         <EditView

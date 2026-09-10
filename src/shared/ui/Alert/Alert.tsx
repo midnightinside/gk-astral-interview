@@ -35,7 +35,7 @@ const Root = styled.div<{ $severity: AlertSeverity }>(({ $severity }) => ({
 
 export const Alert = ({ severity = 'info', children }: AlertProps) => {
   return (
-    <Root $severity={severity} role="alert">
+    <Root $severity={severity} role={severity === 'error' ? 'alert' : 'status'}>
       <Typography
         variant="caption"
         color={severity === 'error' ? 'danger' : 'primary'}

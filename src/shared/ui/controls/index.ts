@@ -1,4 +1,5 @@
 export { CheckboxGroupControl } from './CheckboxGroupControl';
+export { getDescribedBy } from './fieldDescription';
 export { FieldLayout } from './FieldLayout';
 export { GroupFieldLayout } from './GroupFieldLayout';
 export { RadioGroupControl } from './RadioGroupControl';

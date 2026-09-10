@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
-import { type ButtonHTMLAttributes } from 'react';
+import { type ButtonHTMLAttributes, type Ref } from 'react';
 
 import { type ButtonVariant, createButtonStyle } from './buttonStyles';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
   fullWidth?: boolean;
+  ref?: Ref<HTMLButtonElement>;
 };
 
 const Root = styled.button<{

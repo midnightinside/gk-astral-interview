@@ -25,6 +25,11 @@ const Heading = styled.div({
   gap: spacing(1),
 });
 
+/** Обёртка нужна, чтобы сообщение о загрузке попало в живую область. */
+const Status = styled.div({
+  display: 'flex',
+});
+
 export const CardsScreen = () => {
   const dispatch = useAppDispatch();
   const cards = useAppSelector(selectCards);
@@ -47,9 +52,11 @@ export const CardsScreen = () => {
       {errorMessage ? <Alert severity="error">{errorMessage}</Alert> : null}
 
       {isPending ? (
-        <Typography variant="body" color="secondary">
-          Загружаем карточки…
-        </Typography>
+        <Status role="status">
+          <Typography variant="body" color="secondary">
+            Загружаем карточки…
+          </Typography>
+        </Status>
       ) : (
         <CardList cards={cards} />
       )}

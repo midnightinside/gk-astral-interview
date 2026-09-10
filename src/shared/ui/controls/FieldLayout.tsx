@@ -4,6 +4,8 @@ import { type ReactNode } from 'react';
 import { spacing } from '~/shared/theme';
 import { Typography } from '~/shared/ui/Typography';
 
+import { getErrorId, getHintId } from './fieldDescription';
+
 type FieldLayoutProps = {
   /** Идентификатор контрола, с которым связывается подпись. */
   controlId: string;
@@ -44,13 +46,17 @@ export const FieldLayout = ({
       {children}
 
       {hint && !error ? (
-        <Typography variant="caption" color="secondary">
+        <Typography
+          variant="caption"
+          color="secondary"
+          id={getHintId(controlId)}
+        >
           {hint}
         </Typography>
       ) : null}
 
       {error ? (
-        <Typography variant="caption" color="danger">
+        <Typography variant="caption" color="danger" id={getErrorId(controlId)}>
           {error}
         </Typography>
       ) : null}

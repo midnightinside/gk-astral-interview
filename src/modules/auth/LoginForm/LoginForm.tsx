@@ -10,7 +10,7 @@ import { min, object, string } from '~/shared/form/validation';
 import { spacing, theme } from '~/shared/theme';
 import { Alert } from '~/shared/ui/Alert';
 import { Button } from '~/shared/ui/Button';
-import { FieldLayout, TextControl } from '~/shared/ui/controls';
+import { FieldLayout, getDescribedBy, TextControl } from '~/shared/ui/controls';
 import { Typography } from '~/shared/ui/Typography';
 
 export type LoginFormValues = {
@@ -66,7 +66,9 @@ export const LoginForm = ({
   return (
     <Form onSubmit={handleSubmit(submit)} noValidate>
       <Heading>
-        <Typography variant="h2">Вход</Typography>
+        <Typography variant="h2" as="h1">
+          Вход
+        </Typography>
         <Typography variant="caption" color="secondary">
           Тестовые данные: admin / admin
         </Typography>
@@ -88,6 +90,11 @@ export const LoginForm = ({
               autoComplete="username"
               placeholder="admin"
               isInvalid={Boolean(fieldState.error)}
+              describedBy={getDescribedBy({
+                controlId: 'login',
+                hasHint: false,
+                hasError: Boolean(fieldState.error),
+              })}
               onChange={field.onChange}
               onBlur={field.onBlur}
             />
@@ -112,6 +119,11 @@ export const LoginForm = ({
               autoComplete="current-password"
               placeholder="admin"
               isInvalid={Boolean(fieldState.error)}
+              describedBy={getDescribedBy({
+                controlId: 'password',
+                hasHint: false,
+                hasError: Boolean(fieldState.error),
+              })}
               onChange={field.onChange}
               onBlur={field.onBlur}
             />

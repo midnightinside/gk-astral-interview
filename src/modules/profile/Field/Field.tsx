@@ -3,6 +3,7 @@ import {
   CheckboxGroupControl,
   FieldLayout,
   GroupFieldLayout,
+  getDescribedBy,
   RadioGroupControl,
   SelectControl,
   TextAreaControl,
@@ -47,10 +48,16 @@ export const Field = ({ descriptor, control, isDisabled }: FieldProps) => {
       render={({ field, fieldState }) => {
         const error = fieldState.error?.message;
         const options = descriptor.options ?? [];
+        const describedBy = getDescribedBy({
+          controlId,
+          hasHint: Boolean(descriptor.hint),
+          hasError: Boolean(error),
+        });
 
         if (isGroup) {
           return (
             <GroupFieldLayout
+              controlId={controlId}
               label={descriptor.label}
               hint={descriptor.hint}
               error={error}
@@ -92,6 +99,7 @@ export const Field = ({ descriptor, control, isDisabled }: FieldProps) => {
                 placeholder={descriptor.placeholder}
                 isDisabled={isDisabled}
                 isInvalid={Boolean(error)}
+                describedBy={describedBy}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
               />
@@ -105,6 +113,7 @@ export const Field = ({ descriptor, control, isDisabled }: FieldProps) => {
                 options={options}
                 isDisabled={isDisabled}
                 isInvalid={Boolean(error)}
+                describedBy={describedBy}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
               />
@@ -120,6 +129,7 @@ export const Field = ({ descriptor, control, isDisabled }: FieldProps) => {
                 autoComplete={descriptor.autoComplete}
                 isDisabled={isDisabled}
                 isInvalid={Boolean(error)}
+                describedBy={describedBy}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
               />

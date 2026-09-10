@@ -25,6 +25,8 @@ type TypographyProps = {
   color?: TypographyColor;
   align?: 'left' | 'center' | 'right';
   as?: ElementType;
+  /** Нужен, когда на текст ссылается `aria-describedby` контрола. */
+  id?: string;
   className?: string;
   children: ReactNode;
 };
@@ -89,6 +91,7 @@ export const Typography = ({
   color = 'primary',
   align = 'left',
   as,
+  id,
   className,
   children,
 }: TypographyProps) => {
@@ -98,6 +101,7 @@ export const Typography = ({
       $variant={variant}
       $color={color}
       $align={align}
+      id={id}
       className={className}
     >
       {children}

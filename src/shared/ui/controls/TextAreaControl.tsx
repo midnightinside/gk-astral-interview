@@ -13,6 +13,7 @@ type TextAreaControlProps = {
   isDisabled?: boolean;
   isReadOnly?: boolean;
   isInvalid?: boolean;
+  describedBy?: string;
 };
 
 const TextArea = styled.textarea<{ $isInvalid: boolean }>(({ $isInvalid }) => ({
@@ -32,6 +33,7 @@ export const TextAreaControl = ({
   isDisabled = false,
   isReadOnly = false,
   isInvalid = false,
+  describedBy,
 }: TextAreaControlProps) => {
   return (
     <TextArea
@@ -43,6 +45,7 @@ export const TextAreaControl = ({
       disabled={isDisabled}
       readOnly={isReadOnly}
       aria-invalid={isInvalid}
+      aria-describedby={describedBy}
       $isInvalid={isInvalid}
       onChange={(event) => onChange(event.target.value)}
       onBlur={onBlur}

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { spacing, theme } from '~/shared/theme';
 import { Button } from '~/shared/ui/Button';
@@ -74,8 +74,27 @@ const Divider = styled.div({
  */
 export const Card = ({ title, word, example, translation }: CardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const frontButton = useRef<HTMLButtonElement>(null);
+  const backButton = useRef<HTMLButtonElement>(null);
+  const isToggled = useRef(false);
+
+  /**
+   * Скрытая сторона карточки помечается `inert`, поэтому браузер сбрасывает
+   * фокус с нажатой кнопки в начало документа. Фокус переносится на кнопку
+   * открывшейся стороны, чтобы не терять место на странице.
+   */
+  useEffect(() => {
+    if (!isToggled.current) {
+      return;
+    }
+
+    const target = isFlipped ? backButton.current : frontButton.current;
+
+    target?.focus();
+  }, [isFlipped]);
 
   const toggle = () => {
+    isToggled.current = true;
     setIsFlipped((previous) => !previous);
   };
 
@@ -93,7 +112,12 @@ export const Card = ({ title, word, example, translation }: CardProps) => {
               {example}
             </Typography>
           </Content>
-          <Button variant="secondary" onClick={toggle}>
+          <Button
+            ref={frontButton}
+            variant="secondary"
+            aria-pressed={isFlipped}
+            onClick={toggle}
+          >
             Learn more
           </Button>
         </FrontFace>
@@ -110,7 +134,12 @@ export const Card = ({ title, word, example, translation }: CardProps) => {
               {translation}
             </Typography>
           </Content>
-          <Button variant="secondary" onClick={toggle}>
+          <Button
+            ref={backButton}
+            variant="secondary"
+            aria-pressed={isFlipped}
+            onClick={toggle}
+          >
             Назад к слову
           </Button>
         </BackFace>

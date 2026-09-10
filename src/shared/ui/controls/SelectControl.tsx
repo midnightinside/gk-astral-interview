@@ -14,6 +14,7 @@ type SelectControlProps = {
   placeholder?: string;
   isDisabled?: boolean;
   isInvalid?: boolean;
+  describedBy?: string;
 };
 
 const Select = styled.select<{ $isInvalid: boolean }>(({ $isInvalid }) => ({
@@ -32,6 +33,7 @@ export const SelectControl = ({
   placeholder = 'Не выбрано',
   isDisabled = false,
   isInvalid = false,
+  describedBy,
 }: SelectControlProps) => {
   return (
     <Select
@@ -40,6 +42,7 @@ export const SelectControl = ({
       value={value}
       disabled={isDisabled}
       aria-invalid={isInvalid}
+      aria-describedby={describedBy}
       $isInvalid={isInvalid}
       onChange={(event) => onChange(event.target.value)}
       onBlur={onBlur}

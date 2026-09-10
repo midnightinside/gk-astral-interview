@@ -29,6 +29,11 @@ const Heading = styled.div({
   gap: spacing(1),
 });
 
+/** Обёртка нужна, чтобы сообщение о загрузке попало в живую область. */
+const Status = styled.div({
+  display: 'flex',
+});
+
 export const ProfileScreen = () => {
   const dispatch = useAppDispatch();
   const profile = useAppSelector(selectProfile);
@@ -60,9 +65,11 @@ export const ProfileScreen = () => {
       </Heading>
 
       {isPending && !profile ? (
-        <Typography variant="body" color="secondary">
-          Загружаем профиль…
-        </Typography>
+        <Status role="status">
+          <Typography variant="body" color="secondary">
+            Загружаем профиль…
+          </Typography>
+        </Status>
       ) : null}
 
       {profile ? (

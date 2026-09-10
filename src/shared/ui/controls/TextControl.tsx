@@ -16,6 +16,7 @@ type TextControlProps = {
   isReadOnly?: boolean;
   isInvalid?: boolean;
   autoComplete?: string;
+  describedBy?: string;
 };
 
 const Input = styled.input<{ $isInvalid: boolean }>(({ $isInvalid }) =>
@@ -34,6 +35,7 @@ export const TextControl = ({
   isReadOnly = false,
   isInvalid = false,
   autoComplete,
+  describedBy,
 }: TextControlProps) => {
   return (
     <Input
@@ -46,6 +48,7 @@ export const TextControl = ({
       readOnly={isReadOnly}
       autoComplete={autoComplete}
       aria-invalid={isInvalid}
+      aria-describedby={describedBy}
       $isInvalid={isInvalid}
       onChange={(event) => onChange(event.target.value)}
       onBlur={onBlur}

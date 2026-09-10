@@ -256,7 +256,7 @@ src/
 | `Body`     | `shared/ui/Layout`               | children          |
 | `CardList` | `modules/cards/CardList`         | массив через пропсы |
 | `Card`     | `modules/cards/Card`             | через пропсы      |
-| `EditView` | `modules/profile/EditView`       | схема полей       |
+| `EditView` | `modules/profile/EditView`       | массив полей через пропсы |
 | `Field`    | `modules/profile/Field`          | дескриптор поля   |
 
 ## Мок-API

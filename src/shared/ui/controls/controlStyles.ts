@@ -15,7 +15,7 @@ export const createControlStyle = (isInvalid: boolean): CSSObject => ({
   outline: 'none',
   transition: `border-color ${theme.transition.fast}, box-shadow ${theme.transition.fast}`,
 
-  '&:hover:not(:disabled):not(:read-only)': {
+  '&:hover:not(:disabled):not([readonly])': {
     borderColor: theme.color.borderStrong,
   },
 
@@ -26,7 +26,12 @@ export const createControlStyle = (isInvalid: boolean): CSSObject => ({
     }`,
   },
 
-  '&:disabled, &:read-only': {
+  /**
+   * `:read-only` не используется намеренно: этот псевдокласс матчит `select`,
+   * который не считается редактируемым, и все выпадающие списки выглядели бы
+   * заблокированными.
+   */
+  '&:disabled, &[readonly]': {
     color: theme.color.textDisabled,
     background: theme.color.surfaceMuted,
     cursor: 'not-allowed',

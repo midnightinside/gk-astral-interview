@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import {
   createValidationResolver,
@@ -84,13 +84,21 @@ export const EditView = ({
     }
   }, [values, setValue]);
 
+  const submittedValues = useRef<ProfileFormValues | null>(null);
+
+  /**
+   * После успешного сохранения отправленные значения становятся новыми
+   * defaultValues: форма перестаёт считаться изменённой, и появляется сообщение
+   * об успехе, которое скрывается при следующей правке.
+   */
   useEffect(() => {
-    if (isSaved) {
-      reset(undefined, { keepValues: true, keepDirty: false });
+    if (isSaved && submittedValues.current) {
+      reset(submittedValues.current);
     }
   }, [isSaved, reset]);
 
   const submit: SubmitHandler<ProfileFormValues> = (formValues) => {
+    submittedValues.current = formValues;
     onSubmit(formValues);
   };
 

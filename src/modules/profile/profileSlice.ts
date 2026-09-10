@@ -57,11 +57,7 @@ export const saveProfile = createAsyncThunk<
 export const profileSlice = createSlice({
   name: 'profile',
   initialState,
-  reducers: {
-    resetSaveStatus: (state) => {
-      state.saveStatus = 'idle';
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchProfile.pending, (state) => {
@@ -97,8 +93,6 @@ export const profileSlice = createSlice({
     selectProfileError: (state) => state.error,
   },
 });
-
-export const { resetSaveStatus } = profileSlice.actions;
 
 export const {
   selectIsProfilePending,

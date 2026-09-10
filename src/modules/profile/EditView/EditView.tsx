@@ -13,12 +13,16 @@ import { Button } from '~/shared/ui/Button';
 import { Typography } from '~/shared/ui/Typography';
 
 import { Field } from '../Field';
-import { PROFILE_FIELDS } from '../fieldsSchema';
 import { validateProfile } from '../profileValidation';
 import { getFieldState, getForcedValues } from '../relations';
-import { type ProfileFieldName, type ProfileFormValues } from '../types';
+import {
+  type ProfileFieldDescriptor,
+  type ProfileFieldName,
+  type ProfileFormValues,
+} from '../types';
 
 type EditViewProps = {
+  fields: ProfileFieldDescriptor[];
   defaultValues: ProfileFormValues;
   isSaving: boolean;
   isSaved: boolean;
@@ -59,6 +63,7 @@ const Actions = styled.div({
  * скрытие, блокировка и предустановленные значения.
  */
 export const EditView = ({
+  fields,
   defaultValues,
   isSaving,
   isSaved,
@@ -105,7 +110,7 @@ export const EditView = ({
   return (
     <Form onSubmit={handleSubmit(submit)} noValidate>
       <Grid>
-        {PROFILE_FIELDS.map((descriptor) => {
+        {fields.map((descriptor) => {
           const { isVisible, isDisabled } = getFieldState(
             descriptor.name,
             values,
@@ -137,7 +142,7 @@ export const EditView = ({
           {isSaving ? 'Сохранение…' : 'Сохранить изменения'}
         </Button>
         <Typography variant="caption" color="secondary">
-          Полей в форме: {PROFILE_FIELDS.length}
+          Полей в форме: {fields.length}
         </Typography>
       </Actions>
     </Form>
